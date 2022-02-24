@@ -55,27 +55,39 @@ struct ContentView: View {
         }
         // Shows different quote when the app is opened
         .task {
-            let url = URL(string: "https://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=json&lang=en")!
             
-            var request = URLRequest(url: url)
-            request.setValue("application/json",
-                             forHTTPHeaderField: "Accept")
+            await loadNewQuote()
             
-            let urlSession = URLSession.shared
+            print("Have just attepted to load a new joke.")
             
-            // Do-catch block
-            do {
-                
-                let (data, _) = try await urlSession.data(for: request)
-                currentQuote = try JSONDecoder().decode(RandomQuote.self, from: data)
-                
-            } catch {
-                print("Could not retrieve or decode the JSON from endpoint.")
-                print(error)
-            }
         }
         .navigationTitle("Make Your Day Better With Random Quotes")
         .padding()
+    }
+    
+    // MARK: Functions
+    func loadNewQuote() async {
+        
+        let url = URL(string: "https://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=json&lang=en")!
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json",
+                         forHTTPHeaderField: "Accept")
+        
+        let urlSession = URLSession.shared
+        
+        // Do-catch block
+        do {
+            
+            let (data, _) = try await urlSession.data(for: request)
+            currentQuote = try JSONDecoder().decode(RandomQuote.self, from: data)
+            
+        } catch {
+            print("Could not retrieve or decode the JSON from endpoint.")
+            print(error)
+        }
+
+        
     }
 }
 
