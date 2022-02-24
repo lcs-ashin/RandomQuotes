@@ -17,6 +17,9 @@ struct ContentView: View {
     // List of favourites
     @State var favourites: [RandomQuote] = []
     
+    // Is the quote already on the list?
+    @State var currentQuoteAddedToFavourites: Bool = false
+    
     // MARK: Computed Properties
     var body: some View {
         VStack {
@@ -32,6 +35,13 @@ struct ContentView: View {
             Image(systemName: "heart.circle")
                 .resizable()
                 .frame(width: 40, height: 40)
+                .foregroundColor(currentQuoteAddedToFavourites == true ? .red : .secondary)
+                .onTapGesture {
+                    if currentQuoteAddedToFavourites == false {
+                        favourites.append(currentQuote)
+                        currentQuoteAddedToFavourites = true
+                    }
+                }
 
             Button(action: {
                 print("Button was pressed")
@@ -86,6 +96,8 @@ struct ContentView: View {
             
             let (data, _) = try await urlSession.data(for: request)
             currentQuote = try JSONDecoder().decode(RandomQuote.self, from: data)
+            
+            currentQuoteAddedToFavourites = false
             
         } catch {
             print("Could not retrieve or decode the JSON from endpoint.")
