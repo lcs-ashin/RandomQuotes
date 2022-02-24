@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RandomQuote: Decodable {
+struct RandomQuote: Decodable, Hashable {
     let quoteText: String
     let quoteAuthor: String
     let senderName: String

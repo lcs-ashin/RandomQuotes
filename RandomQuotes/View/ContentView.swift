@@ -14,6 +14,8 @@ struct ContentView: View {
                                                        senderName: "",
                                                        senderLink: "",
                                                        quoteLink: "")
+    // List of favourites
+    @State var favourites: [RandomQuote] = []
     
     // MARK: Computed Properties
     var body: some View {
@@ -52,10 +54,8 @@ struct ContentView: View {
                 Spacer()
             }
             
-            List {
-                Text("Success builds character. Failure reveals it.")
-                Text("Nothing could be worse than the fear that one had given up too soon, and left one unexpended effort that might have saved the world.")
-                Text("Nothing happens unless first we dream.")
+            List(favourites, id: \.self) { currentQuote in
+                Text(currentQuote.quoteText)
             }
         }
         // Shows different quote when the app is opened
