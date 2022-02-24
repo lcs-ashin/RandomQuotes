@@ -55,7 +55,7 @@ struct ContentView: View {
         }
         // Shows different quote when the app is opened
         .task {
-            let url = URL(string: "http://forismatic.com/en/")!
+            let url = URL(string: "https://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=json&lang=en")!
             
             var request = URLRequest(url: url)
             request.setValue("application/json",
