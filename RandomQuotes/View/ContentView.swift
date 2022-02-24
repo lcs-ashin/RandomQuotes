@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    // MARK: Stored Properties
+    @State var currentQuote: RandomQuote = RandomQuote(quoteText: "",
+                                                       quoteAuthor: "",
+                                                       senderName: "",
+                                                       senderLink: "",
+                                                       quoteLink: "")
+    
+    // MARK: Computed Properties
     var body: some View {
         VStack {
-            Text("Hello, world!")
+            Text(currentQuote.quoteText)
                 .multilineTextAlignment(.leading)
                 .padding(30)
                 .overlay(
@@ -45,12 +53,36 @@ struct ContentView: View {
                 Text("Nothing happens unless first we dream.")
             }
         }
-    
+        // Shows different quote when the app is opened
+        .task {
+            let url = URL(string: "http://forismatic.com/en/")!
+            
+            var request = URLRequest(url: url)
+            request.setValue("application/json",
+                             forHTTPHeaderField: "Accept")
+            
+            let urlSession = URLSession.shared
+            
+            // Do-catch block
+            do {
+                
+                let (data, _) = try await urlSession.data(for: request)
+                currentQuote = try JSONDecoder().decode(RandomQuote.self, from: data)
+                
+            } catch {
+                print("Could not retrieve or decode the JSON from endpoint.")
+                print(error)
+            }
+        }
+        .navigationTitle("Make Your Day Better With Random Quotes")
+        .padding()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        NavigationView {
+            ContentView()
+        }
     }
 }
