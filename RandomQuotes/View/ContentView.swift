@@ -33,6 +33,11 @@ struct ContentView: View {
 
             Button(action: {
                 print("Button was pressed")
+                
+                Task {
+                    await loadNewQuote()
+                }
+                
             }, label: {
                 Text("Another one!")
             })
