@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     // MARK: Stored Properties
+    // Detect when app moves between background, foreground, and inactive states
+    @Environment(\.scenePhase) var scenePhase
     @State var currentQuote: RandomQuote = RandomQuote(quoteText: "",
                                                        quoteAuthor: "",
                                                        senderName: "",
@@ -68,6 +70,28 @@ struct ContentView: View {
                 Text(currentQuote.quoteText)
             }
         }
+        // React to changes of state for the app (foreground, background, and inactive)
+        .onChange(of: scenePhase) { newPhase in
+            
+            if newPhase == .inactive {
+                
+                print("Inactive")
+                
+            } else if newPhase == .active {
+                
+                print("Active")
+                
+            } else if newPhase == .background {
+                
+                print("Background")
+                
+                // Permanently save the list of tasks
+                persistFavourites()
+                
+            }
+
+        }
+
         // Shows different quote when the app is opened
         .task {
             
