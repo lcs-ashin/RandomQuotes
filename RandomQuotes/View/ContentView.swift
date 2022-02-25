@@ -76,7 +76,7 @@ struct ContentView: View {
             print("Have just attepted to load a new joke.")
             
         }
-        .navigationTitle("Make Your Day Better With Random Quotes")
+        .navigationTitle("Random Quotes")
         .padding()
     }
     
